@@ -18,9 +18,9 @@ object Parser {
               (computation, selected) <- getComputationAndSelected(computationPart)
               jump <- getJump(jumpPart)
               destinations = getDestinations(destinationsPart)
-            } yield CCmd(selected, computation, destinations, jump)).getOrElse(SyntaxError)
+            } yield CCmd(selected, computation, destinations, jump)).getOrElse(Malformed)
           case "" => NoOp
-          case _  => SyntaxError
+          case _  => Malformed
         }
     }
   }

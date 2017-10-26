@@ -25,8 +25,8 @@ class ParserSpec extends UnitSpec {
       }
 
       "return a syntax error where there are unexpected characters" in {
-        Parser.parse("   @613;") shouldEqual SyntaxError
-        Parser.parse("   h@613") shouldEqual SyntaxError
+        Parser.parse("   @613;") shouldEqual Malformed
+        Parser.parse("   h@613") shouldEqual Malformed
       }
     }
     "parsing C commands" must {
@@ -62,7 +62,7 @@ class ParserSpec extends UnitSpec {
       }
 
       "return syntax errors for unrecognised commands" in {
-        Parser.parse("A&A") shouldEqual SyntaxError
+        Parser.parse("A&A") shouldEqual Malformed
       }
 
       "parse destinations" in{
@@ -72,7 +72,7 @@ class ParserSpec extends UnitSpec {
       }
 
       "return syntax errors for unrecognised destinations" in {
-        Parser.parse("C=0") shouldEqual SyntaxError
+        Parser.parse("C=0") shouldEqual Malformed
       }
 
       "parse jumps" in{
@@ -86,7 +86,7 @@ class ParserSpec extends UnitSpec {
       }
 
       "return syntax errors for unrecognised jumps" in {
-        Parser.parse("0;JNN") shouldEqual SyntaxError
+        Parser.parse("0;JNN") shouldEqual Malformed
       }
     }
   }

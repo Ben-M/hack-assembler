@@ -7,7 +7,11 @@ object Types {
 
   sealed trait Cmd extends ParseResult
   case class ACmd(addr: Address) extends Cmd
-  case class CCmd(sel: SelectableRegister, cmp: Computation, dst: Set[Register], jmp: Jump) extends Cmd
+  case class CCmd(sel: SelectableRegister,
+                  cmp: Computation,
+                  dst: Set[Register],
+                  jmp: Jump)
+      extends Cmd
 
   sealed trait SelectableRegister
   sealed trait Register
@@ -45,6 +49,8 @@ object Types {
   object DAndSel extends Computation
   object DOrSel extends Computation
 
-  object SyntaxError extends ParseResult
+  object Malformed extends ParseResult
   object NoOp extends ParseResult
+
+  case class SyntaxError(line: Integer) extends Exception("", None.orNull)
 }

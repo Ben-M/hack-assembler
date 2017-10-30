@@ -7,10 +7,10 @@ object Parser {
 
     val stripWhiteSpaceAndComments = raw"\s*([^/\s]*)\s*(//.*)?".r
     val literalACmd = raw"@(\d*)".r
-    val symbolicACmd = raw"@([\w-]+)".r
+    val symbolicACmd = raw"@([\w-\.\$$]+)".r
 
     val cCmd = raw"([DAM]*\=)?([01\-DAM!&+}|]{1,3})(;[A-Z]{3})?".r
-    val label = raw"\(([\w-]+)\)".r
+    val label = raw"\(([\w-\.\$$]+)\)".r
 
     line match {
       case stripWhiteSpaceAndComments(command, _) =>

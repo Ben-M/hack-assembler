@@ -21,12 +21,11 @@ class ParserSpec extends UnitSpec {
         Parser.parse("   @613    ") shouldEqual ACmd(LiteralValue(613))
       }
       "parse commands with symbolic values, including whitespace" in {
-        Parser.parse("   @My_DESTINATION3    ") shouldEqual ACmd(SymbolicValue("My_DESTINATION3"))
+        Parser.parse("   @My_$DESTINATION.3    ") shouldEqual ACmd(SymbolicValue("My_$DESTINATION.3"))
       }
       "ignore comments" in {
         Parser.parse("  @613   //pomegranate") shouldEqual ACmd(LiteralValue(613))
       }
-
       "return a syntax error where there are unexpected characters" in {
         Parser.parse("   @613;") shouldEqual Malformed
         Parser.parse("   h@613") shouldEqual Malformed
@@ -94,7 +93,7 @@ class ParserSpec extends UnitSpec {
     }
     "parsing labels for jumps" must {
       "parse labels, including whitespace" in {
-        Parser.parse("   (Label_7)    ") shouldEqual Label("Label_7")
+        Parser.parse("   ($Label_7.0)    ") shouldEqual Label("$Label_7.0")
       }
       "ignore comments" in {
         Parser.parse("  (Label_7)   //pomegranate") shouldEqual Label("Label_7")

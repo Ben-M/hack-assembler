@@ -15,7 +15,7 @@ object SymbolCalculator {
           case Label(name) =>
             lState.copy(
               symbolTable = SymbolTable(lState.symbolTable.table ++ Map(
-                name -> LiteralAddress(lState.lineNo))))
+                name -> LiteralValue(lState.lineNo))))
           case _ => lState
         }
       }
@@ -30,12 +30,12 @@ object SymbolCalculator {
     lines
       .foldLeft(VariableState(16, symbolTable)) { (vState, parseResult) =>
         parseResult match {
-          case ACmd(SymbolicAddress(symbol)) =>
+          case ACmd(SymbolicValue(symbol)) =>
             if (vState.symbolTable.table.isDefinedAt(symbol)) {
               vState
             } else {
               val newVariable =
-                Map(symbol -> LiteralAddress(vState.nextAddress))
+                Map(symbol -> LiteralValue(vState.nextAddress))
               val newSymbolTable =
                 SymbolTable(vState.symbolTable.table ++ newVariable)
               VariableState((vState.nextAddress + 1).toShort, newSymbolTable)

@@ -15,8 +15,8 @@ object Parser {
     line match {
       case stripWhiteSpaceAndComments(command, _) =>
         command match {
-          case literalACmd(address) => ACmd(LiteralAddress(address.toShort))
-          case symbolicACmd(symbol) => ACmd(SymbolicAddress(symbol))
+          case literalACmd(value) => ACmd(LiteralValue(value.toShort))
+          case symbolicACmd(symbol) => ACmd(SymbolicValue(symbol))
           case cCmd(destinationsPart, computationPart, jumpPart) =>
             (for {
               (computation, selected) <- getComputationAndSelected(

@@ -6,16 +6,16 @@ object Coder {
 
   def code(command: Cmd, symbolTable: SymbolTable): String =
     command match {
-      case ACmd(LiteralAddress(address)) => codeA(address)
-      case ACmd(SymbolicAddress(label)) => {
-        val address: LiteralAddress = symbolTable.table.getOrElse(label, LiteralAddress(0))
-        codeA(address.address)
+      case ACmd(LiteralValue(value)) => codeA(value)
+      case ACmd(SymbolicValue(label)) => {
+        val value: LiteralValue = symbolTable.table.getOrElse(label, LiteralValue(0))
+        codeA(value.value)
       }
       case CCmd(sel, cmp, dst, jmp) => "111"  + codeSel(sel) + codeCmp(cmp) + codeDst(dst) + codeJmp(jmp)
     }
 
-  private def codeA(address: Short) =
-    "0" + ("00000000000000000000" + address.toBinaryString takeRight 15)
+  private def codeA(value: Short) =
+    "0" + ("00000000000000000000" + value.toBinaryString takeRight 15)
 
   private def codeSel(sel: SelectableRegister) = sel match {
     case A => "0"

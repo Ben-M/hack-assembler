@@ -6,18 +6,18 @@ class CoderSpec extends UnitSpec {
   "The Parser" when {
     "coding A commands" must {
       "output the correct code for literal values" in {
-        Coder.code(ACmd(LiteralAddress(613)), SymbolTable()) shouldEqual "0000001001100101"
+        Coder.code(ACmd(LiteralValue(613)), SymbolTable()) shouldEqual "0000001001100101"
       }
       "handle very large literal values by ignoring the most significant bits" in {
-        Coder.code(ACmd(LiteralAddress(32767)), SymbolTable()) shouldEqual "0111111111111111"
+        Coder.code(ACmd(LiteralValue(32767)), SymbolTable()) shouldEqual "0111111111111111"
       }
       "output the correct code from the symbol table for  symbolic values" in {
         val table = SymbolTable(
           Map(
-            "RIGHT" -> LiteralAddress(613),
-            "WRONG" -> LiteralAddress(123)
+            "RIGHT" -> LiteralValue(613),
+            "WRONG" -> LiteralValue(123)
           ))
-        Coder.code(ACmd(SymbolicAddress("RIGHT")), table) shouldEqual "0000001001100101"
+        Coder.code(ACmd(SymbolicValue("RIGHT")), table) shouldEqual "0000001001100101"
       }
     }
 

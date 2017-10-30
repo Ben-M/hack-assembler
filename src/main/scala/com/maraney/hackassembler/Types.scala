@@ -1,14 +1,14 @@
 package com.maraney.hackassembler
 
 object Types {
-  sealed trait Address
-  case class LiteralAddress(address: Short) extends Address
-  case class SymbolicAddress(symbol: String) extends Address
+  sealed trait Value
+  case class LiteralValue(value: Short) extends Value
+  case class SymbolicValue(symbol: String) extends Value
 
   sealed trait ParseResult
 
   sealed trait Cmd extends ParseResult
-  case class ACmd(addr: Address) extends Cmd
+  case class ACmd(addr: Value) extends Cmd
   case class CCmd(sel: SelectableRegister,
                   cmp: Computation,
                   dst: Set[Register],
@@ -57,5 +57,5 @@ object Types {
 
   case class SyntaxError(line: Integer) extends Exception("", None.orNull)
 
-  case class SymbolTable(table: Map[String, LiteralAddress] = Map()) extends AnyVal
+  case class SymbolTable(table: Map[String, LiteralValue] = Map()) extends AnyVal
 }

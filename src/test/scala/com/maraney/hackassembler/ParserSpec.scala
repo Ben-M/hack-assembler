@@ -17,14 +17,14 @@ class ParserSpec extends UnitSpec {
       }
     }
     "parsing A commands" must {
-      "parse commands with literal addresses, including whitespace" in {
-        Parser.parse("   @613    ") shouldEqual ACmd(LiteralAddress(613))
+      "parse commands with literal values, including whitespace" in {
+        Parser.parse("   @613    ") shouldEqual ACmd(LiteralValue(613))
       }
-      "parse commands with symbolic addresses, including whitespace" in {
-        Parser.parse("   @My_DESTINATION3    ") shouldEqual ACmd(SymbolicAddress("My_DESTINATION3"))
+      "parse commands with symbolic values, including whitespace" in {
+        Parser.parse("   @My_DESTINATION3    ") shouldEqual ACmd(SymbolicValue("My_DESTINATION3"))
       }
       "ignore comments" in {
-        Parser.parse("  @613   //pomegranate") shouldEqual ACmd(LiteralAddress(613))
+        Parser.parse("  @613   //pomegranate") shouldEqual ACmd(LiteralValue(613))
       }
 
       "return a syntax error where there are unexpected characters" in {

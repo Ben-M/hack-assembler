@@ -11,7 +11,7 @@ object Assembler {
       "SP" -> LiteralValue(0),
       "LCL" -> LiteralValue(1),
       "ARG" -> LiteralValue(2),
-      "THIS" -> LiteralValue(2),
+      "THIS" -> LiteralValue(3),
       "THAT" -> LiteralValue(4),
       "SCREEN" -> LiteralValue(16384),
       "KBD" -> LiteralValue(24576),

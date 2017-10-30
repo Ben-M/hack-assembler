@@ -1,7 +1,9 @@
 package com.maraney.hackassembler
 
 object Types {
-  case class Address(address: Short) extends AnyVal
+  sealed trait Address
+  case class LiteralAddress(address: Short) extends Address
+  case class SymbolicAddress(symbol: String) extends Address
 
   sealed trait ParseResult
 
@@ -49,8 +51,11 @@ object Types {
   object DAndSel extends Computation
   object DOrSel extends Computation
 
+  case class Label(symbol: String) extends ParseResult
   object Malformed extends ParseResult
   object NoOp extends ParseResult
 
   case class SyntaxError(line: Integer) extends Exception("", None.orNull)
+
+  case class SymbolTable(table: Map[String, LiteralAddress] = Map()) extends AnyVal
 }

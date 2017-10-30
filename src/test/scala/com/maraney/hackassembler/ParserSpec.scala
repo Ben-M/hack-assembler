@@ -17,11 +17,14 @@ class ParserSpec extends UnitSpec {
       }
     }
     "parsing A commands" must {
-      "parse simple commands, including whitespace" in {
-        Parser.parse("   @613    ") shouldEqual ACmd(Address(613))
+      "parse commands with literal addresses, including whitespace" in {
+        Parser.parse("   @613    ") shouldEqual ACmd(LiteralAddress(613))
+      }
+      "parse commands with symbolic addresses, including whitespace" in {
+        Parser.parse("   @My_DESTINATION3    ") shouldEqual ACmd(SymbolicAddress("My_DESTINATION3"))
       }
       "ignore comments" in {
-        Parser.parse("  @613   //pomegranate") shouldEqual ACmd(Address(613))
+        Parser.parse("  @613   //pomegranate") shouldEqual ACmd(LiteralAddress(613))
       }
 
       "return a syntax error where there are unexpected characters" in {
@@ -87,6 +90,19 @@ class ParserSpec extends UnitSpec {
 
       "return syntax errors for unrecognised jumps" in {
         Parser.parse("0;JNN") shouldEqual Malformed
+      }
+    }
+    "parsing labels for jumps" must {
+      "parse labels, including whitespace" in {
+        Parser.parse("   (Label_7)    ") shouldEqual Label("Label_7")
+      }
+      "ignore comments" in {
+        Parser.parse("  (Label_7)   //pomegranate") shouldEqual Label("Label_7")
+      }
+
+      "return a syntax error where there are unexpected characters" in {
+        Parser.parse("   @(Label_7) @") shouldEqual Malformed
+        Parser.parse("   (Label_7 a) ") shouldEqual Malformed
       }
     }
   }

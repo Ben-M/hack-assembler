@@ -4,14 +4,18 @@ import com.maraney.hackassembler.Types._
 
 object Coder {
 
-  def code(command: Cmd) =
+  def code(command: Cmd, symbolTable: SymbolTable): String =
     command match {
-      case ACmd(address) => "0" + codeAddress(address)
+      case ACmd(LiteralAddress(address)) => codeA(address)
+      case ACmd(SymbolicAddress(label)) => {
+        val address: LiteralAddress = symbolTable.table.getOrElse(label, LiteralAddress(0))
+        codeA(address.address)
+      }
       case CCmd(sel, cmp, dst, jmp) => "111"  + codeSel(sel) + codeCmp(cmp) + codeDst(dst) + codeJmp(jmp)
     }
 
-  private def codeAddress(address: Address) =
-    "00000000000000000000" + address.address.toBinaryString takeRight 15
+  private def codeA(address: Short) =
+    "0" + ("00000000000000000000" + address.toBinaryString takeRight 15)
 
   private def codeSel(sel: SelectableRegister) = sel match {
     case A => "0"

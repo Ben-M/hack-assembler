@@ -17,6 +17,16 @@ class AssemblerSpec extends UnitSpec {
       output shouldEqual Success(desiredOutput)
     }
 
+    "assembles program with symbols" in {
+      val input =
+        Source.fromFile("src/test/fixtures/withsymbols.asm").getLines.toList
+      val desiredOutput: Seq[String] =
+        Source.fromFile("src/test/fixtures/withsymbols.hack").getLines.toList
+      val output = Assembler.assemble(input)
+
+      output shouldEqual Success(desiredOutput)
+    }
+
     "identifies syntax errors" in {
       val input =
         Source.fromFile("src/test/fixtures/error-line-10.asm").getLines.toList

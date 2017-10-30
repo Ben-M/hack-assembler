@@ -6,22 +6,30 @@ object Parser {
   def parse(line: String) = {
 
     val stripWhiteSpaceAndComments = raw"\s*([^/\s]*)\s*(//.*)?".r
-    val aCmd = raw"(@)(\d*)".r
+    val literalACmd = raw"@(\d*)".r
+    val symbolicACmd = raw"@([\w-]+)".r
+
     val cCmd = raw"([DAM]*\=)?([01\-DAM!&+}|]{1,3})(;[A-Z]{3})?".r
+    val label = raw"\(([\w-]+)\)".r
 
     line match {
       case stripWhiteSpaceAndComments(command, _) =>
         command match {
-          case aCmd(_, address) => ACmd(Address(address.toShort))
+          case literalACmd(address) => ACmd(LiteralAddress(address.toShort))
+          case symbolicACmd(symbol) => ACmd(SymbolicAddress(symbol))
           case cCmd(destinationsPart, computationPart, jumpPart) =>
             (for {
-              (computation, selected) <- getComputationAndSelected(computationPart)
+              (computation, selected) <- getComputationAndSelected(
+                computationPart)
               jump <- getJump(jumpPart)
               destinations = getDestinations(destinationsPart)
-            } yield CCmd(selected, computation, destinations, jump)).getOrElse(Malformed)
-          case "" => NoOp
-          case _  => Malformed
+            } yield CCmd(selected, computation, destinations, jump))
+              .getOrElse(Malformed)
+          case label(symbol) => Label(symbol)
+          case ""            => NoOp
+          case _             => Malformed
         }
+      case _ => Malformed
     }
   }
 
